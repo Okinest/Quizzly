@@ -1,9 +1,10 @@
-import "./index.css";
+import "./styles/index.css";
+import StartScreen from "./components/pages/StartScreen";
 
 export function App() {
   return (
     <div>
-      <h1>Quizzly</h1>
+      <StartScreen />
     </div>
   );
 }
