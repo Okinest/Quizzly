@@ -19,6 +19,7 @@ export default function StartScreen() {
     ];
 
     const categoryOptions: Option[] = [
+        { value: "0", label: "Any Category" },
         { value: "9", label: "General Knowledge" },
         { value: "11", label: "Entertainment: Film" },
         { value: "15", label: "Entertainment: Video Games" },
