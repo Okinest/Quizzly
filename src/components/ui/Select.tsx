@@ -11,15 +11,20 @@ export default function Select({ label, options, value, onChange, placeholder }:
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="
-          bg-surface 
+          bg-surface-hover
           text-text 
           border border-border 
-          rounded-lg 
-          px-4 py-3
+          rounded-xl 
+          px-4 py-3.5
           focus:outline-none 
           focus:ring-2 
           focus:ring-primary
+          focus:border-primary
           cursor-pointer
+          transition-all duration-200
+          hover:border-primary/50
+          appearance-none
+          pr-12
         "
       >
         {placeholder && (
