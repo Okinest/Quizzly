@@ -3,10 +3,13 @@ import type { Question } from "../../types/api-response";
 import { useState } from "react";
 import { ButtonAnswer } from "../ui/Button";
 import { decodeHtml } from "../../utils/format";
+import ProgressBar from "../ui/ProgressBar";
 
 export default function QuizScreen() {
     const location = useLocation();
     const navigate = useNavigate();
+
+    const [score, setScore] = useState<number>(0);
     
     const questions: Question[] = location.state?.questions ?? [];
     
@@ -26,15 +29,12 @@ export default function QuizScreen() {
 
     const allAnswers = [...currentQuestion.incorrect_answers, currentQuestion.correct_answer];
     const shuffledAnswers = allAnswers.sort(() => Math.random() - 0.5);
-    console.log(allAnswers);
 
 
     return (
         <div className="gradient-bg min-h-screen flex items-center justify-center p-4">
             <div className="card w-full max-w-2xl p-8">
-                <p className="text-center text-muted mb-4">
-                    Question {currentIndex + 1} / {questions.length}
-                </p>
+                <ProgressBar current={currentIndex + 1} total={questions.length} />
                 <h2 className="text-xl font-bold text-center mb-6">
                     {currentQuestion?.question ? decodeHtml(currentQuestion.question) : ""}
                 </h2>
@@ -44,10 +44,16 @@ export default function QuizScreen() {
                         <ButtonAnswer
                             key={answer}
                             label={decodeHtml(answer)}
-                            onClick={() => setCurrentIndex(prev => isLastQuestion ? prev : prev + 1)}
+                            onClick={() => {
+                                if (answer === currentQuestion.correct_answer) {
+                                    setScore(prev => prev + 1);
+                                }
+                                setCurrentIndex(prev => isLastQuestion ? prev : prev + 1);
+                            }}
                         />
                     ))}
                 </div>
+                <p className="text-center text-muted mt-4">Score: {score}</p>
             </div>
         </div>
     );
