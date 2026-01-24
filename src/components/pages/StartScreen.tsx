@@ -1,15 +1,20 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { LuBrain } from "react-icons/lu";
 import Button from "../ui/Button";
 import Select from "../ui/Select";
 import type { Option } from "../../types/select";
 import { fetchQuestions } from "../../services/api";
+import Loader from "../ui/Loader";
 
 export default function StartScreen() {
+    // utilisation de useNavigate car navigation pas immediate
+    const navigate = useNavigate();
 
     const [amount, setAmount] = useState<string>("");
     const [category, setCategory] = useState<string>("");
     const [difficulty, setDifficulty] = useState<string>("");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const amountOptions: Option[] = [
         { value: "3", label: "3" },
@@ -36,13 +41,27 @@ export default function StartScreen() {
         { value: "hard", label: "Difficile" },
     ];
 
+    const handleStartQuiz = () => {
+        setIsLoading(true);
+        fetchQuestions(amount, difficulty, category)
+            .then((apiResponse) => {
+                navigate("/quiz", { state: { questions: apiResponse.results } });
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }
+
     return (
         <div className="gradient-bg min-h-screen flex items-center justify-center p-4">
             <div className="card w-full max-w-md p-8">
                 {/* Header */}
                 <div className="text-center">
                     <div className="flex flex-col items-center mb-8">
-                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary mb-4">
+                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-linear-to-br from-primary to-secondary mb-4">
                             <span className="text-3xl"><LuBrain /></span>
                         </div>
                         <h1 className="text-4xl font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
@@ -76,13 +95,19 @@ export default function StartScreen() {
                     />
                 </div>
 
+                {/* Button */}
                 <div className="mt-8">
                     <Button
                         label="Commencer le quiz"
-                        onClick={() => fetchQuestions(amount, difficulty, category)}
+                        onClick={handleStartQuiz}
                         disabled={!amount || !difficulty || !category}
                     />
                 </div>
+                {isLoading && (
+                    <div className="fixed inset-0 bg-background/80 flex items-center justify-center z-50">
+                        <Loader />
+                    </div>
+                )}
             </div>
         </div>
     );
