@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { LuBrain } from "react-icons/lu";
-import Button from "../ui/Button";
+import { ButtonMenu } from "../ui/Button";
 import Select from "../ui/Select";
 import type { Option } from "../../types/select";
 import { fetchQuestions } from "../../services/api";
 import Loader from "../ui/Loader";
+import Modal from "../ui/Modal";
 
 export default function StartScreen() {
     // utilisation de useNavigate car navigation pas immediate
@@ -15,6 +16,7 @@ export default function StartScreen() {
     const [category, setCategory] = useState<string>("");
     const [difficulty, setDifficulty] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
     const amountOptions: Option[] = [
         { value: "3", label: "3" },
@@ -22,6 +24,7 @@ export default function StartScreen() {
         { value: "10", label: "10" },
         { value: "15", label: "15" },
         { value: "20", label: "20" },
+        { value: "50", label: "50" },
     ];
 
     const categoryOptions: Option[] = [
@@ -44,11 +47,11 @@ export default function StartScreen() {
     const handleStartQuiz = () => {
         setIsLoading(true);
         fetchQuestions(amount, difficulty, category)
-            .then((apiResponse) => {
-                navigate("/quiz", { state: { questions: apiResponse.results } });
+            .then((questions) => {
+                navigate("/quiz", { state: { questions } });
             })
             .catch((error) => {
-                console.error(error);
+                setError(error.message);
             })
             .finally(() => {
                 setIsLoading(false);
@@ -97,7 +100,7 @@ export default function StartScreen() {
 
                 {/* Button */}
                 <div className="mt-8">
-                    <Button
+                    <ButtonMenu
                         label="Commencer le quiz"
                         onClick={handleStartQuiz}
                         disabled={!amount || !difficulty || !category}
@@ -107,6 +110,9 @@ export default function StartScreen() {
                     <div className="fixed inset-0 bg-background/80 flex items-center justify-center z-50">
                         <Loader />
                     </div>
+                )}
+                {error && (
+                    <Modal message={error} onClose={() => setError(null)} />
                 )}
             </div>
         </div>
