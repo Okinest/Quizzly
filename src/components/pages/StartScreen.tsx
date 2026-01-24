@@ -3,6 +3,7 @@ import { LuBrain } from "react-icons/lu";
 import Button from "../ui/Button";
 import Select from "../ui/Select";
 import type { Option } from "../../types/select";
+import { fetchQuestions } from "../../services/api";
 
 export default function StartScreen() {
 
@@ -44,7 +45,7 @@ export default function StartScreen() {
                         <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary mb-4">
                             <span className="text-3xl"><LuBrain /></span>
                         </div>
-                        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                        <h1 className="text-4xl font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
                             Quizzly
                         </h1>
                     </div>
@@ -77,7 +78,9 @@ export default function StartScreen() {
 
                 <div className="mt-8">
                     <Button
-                        label="Commencer le quiz" 
+                        label="Commencer le quiz"
+                        onClick={() => fetchQuestions(amount, difficulty, category)}
+                        disabled={!amount || !difficulty || !category}
                     />
                 </div>
             </div>
