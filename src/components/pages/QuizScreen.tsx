@@ -33,10 +33,25 @@ export default function QuizScreen() {
 
     const handleTimeUp = () => {
         if (isLastQuestion) {
-            // TODO: naviguer vers l'écran de résultats
-            return;
+            navigate("/results", { state: { score, totalQuestions: questions.length } });
+        } else {
+            setCurrentIndex(prev => prev + 1);
         }
-        setCurrentIndex(prev => prev + 1);
+    };
+
+    const handleAnswer = (answer: string) => {
+        const isCorrect = answer === currentQuestion.correct_answer;
+        const newScore = isCorrect ? score + 1 : score;
+
+        if (isCorrect) {
+            setScore(newScore);
+        }
+
+        if (isLastQuestion) {
+            navigate("/results", { state: { score: newScore, totalQuestions: questions.length } });
+        } else {
+            setCurrentIndex(prev => prev + 1);
+        }
     };
 
     return (
@@ -64,16 +79,10 @@ export default function QuizScreen() {
                         <ButtonAnswer
                             key={answer}
                             label={decodeHtml(answer)}
-                            onClick={() => {
-                                if (answer === currentQuestion.correct_answer) {
-                                    setScore(prev => prev + 1);
-                                }
-                                setCurrentIndex(prev => isLastQuestion ? prev : prev + 1);
-                            }}
+                            onClick={() => handleAnswer(answer)}
                         />
                     ))}
                 </div>
-                <p className="text-center text-muted mt-4">Score: {score}</p>
             </div>
         </div>
     );
