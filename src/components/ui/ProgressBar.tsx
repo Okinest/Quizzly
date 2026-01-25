@@ -4,7 +4,7 @@ export default function ProgressBar({ current, total, showIndicator = true }: Pr
     const percentage = (current / total) * 100;
 
     return (
-        <div className="mb-6">
+        <div className={showIndicator ? "mb-6" : ""}>
             {showIndicator && (
                 <div className="flex justify-between items-center mb-2">
                     <span className="text-sm text-text-muted">
