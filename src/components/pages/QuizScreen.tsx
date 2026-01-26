@@ -11,6 +11,9 @@ export default function QuizScreen() {
     const navigate = useNavigate();
 
     const [score, setScore] = useState<number>(0);
+
+    // Question à poser : Pourquoi le useState doit toujours être appelé avant tout return conditionnel ?
+    const [currentIndex, setCurrentIndex] = useState<number>(0);
     
     const questions: Question[] = location.state?.questions ?? [];
     
@@ -19,7 +22,6 @@ export default function QuizScreen() {
         return null;
     }
     
-    const [currentIndex, setCurrentIndex] = useState<number>(0);
     const currentQuestion = questions[currentIndex];
     const isLastQuestion = questions[questions.length - 1] === currentQuestion;
 
@@ -29,6 +31,8 @@ export default function QuizScreen() {
     }
 
     const allAnswers = [...currentQuestion.incorrect_answers, currentQuestion.correct_answer];
+
+    // Methode la plus simple pour mélanger les réponses (sinon algorithme de Fisher-Yates)
     const shuffledAnswers = allAnswers.sort(() => Math.random() - 0.5);
 
     const handleTimeUp = () => {
@@ -60,7 +64,7 @@ export default function QuizScreen() {
                 <div className="flex items-center gap-4 mb-6">
                     <div className="flex-1">
                         <span className="text-sm text-text-muted mb-2 block">
-                            Question {currentIndex + 1} sur {questions.length}
+                            Question {currentIndex + 1} of {questions.length}
                         </span>
                         <ProgressBar current={currentIndex + 1} total={questions.length} showIndicator={false} />
                     </div>
