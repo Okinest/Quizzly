@@ -19,9 +19,9 @@ export default function EndScreen() {
                     {score} / {totalQuestions}
                 </h1>
                 <p className="text-center text-muted mb-8">
-                    Vous avez obtenu {score} points sur {totalQuestions} questions.
+                    You have scored {score} points out of {totalQuestions} questions.
                 </p>
-                <ButtonMenu label="Recommencer" onClick={handleRestart} />
+                <ButtonMenu label="Restart" onClick={handleRestart} />
             </div>
         </div>
     );

@@ -39,9 +39,9 @@ export default function StartScreen() {
     ];
 
     const difficultyOptions: Option[] = [
-        { value: "easy", label: "Facile" },
-        { value: "medium", label: "Moyen" },
-        { value: "hard", label: "Difficile" },
+        { value: "easy", label: "Easy" },
+        { value: "medium", label: "Medium" },
+        { value: "hard", label: "Hard" },
     ];
 
     const handleStartQuiz = () => {
@@ -76,32 +76,32 @@ export default function StartScreen() {
                 {/* Form */}
                 <div className="space-y-5">
                     <Select
-                        label="Nombre de questions"
+                        label="Number of questions"
                         options={amountOptions}
                         value={amount}
                         onChange={setAmount}
-                        placeholder="Sélectionnez"
+                        placeholder="Select"
                     />
                     <Select
-                        label="Catégorie"
+                        label="Category"
                         options={categoryOptions}
                         value={category}
                         onChange={setCategory}
-                        placeholder="Sélectionnez"
+                        placeholder="Select"
                     />
                     <Select
-                        label="Difficulté"
+                        label="Difficulty"
                         options={difficultyOptions}
                         value={difficulty}
                         onChange={setDifficulty}
-                        placeholder="Sélectionnez"
+                        placeholder="Select"
                     />
                 </div>
 
                 {/* Button */}
                 <div className="mt-8">
                     <ButtonMenu
-                        label="Commencer le quiz"
+                        label="Start quiz"
                         onClick={handleStartQuiz}
                         disabled={!amount || !difficulty || !category}
                     />
