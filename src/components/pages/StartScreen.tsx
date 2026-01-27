@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { LuBrain } from "react-icons/lu";
+import type { Option } from "../../types/select";
+import type { Category } from "../../types/api-response";
+import { fetchQuestions, fetchCategories } from "../../services/api";
 import { ButtonMenu } from "../ui/Button";
 import Select from "../ui/Select";
-import type { Option } from "../../types/select";
-import { fetchQuestions } from "../../services/api";
 import Loader from "../ui/Loader";
 import Modal from "../ui/Modal";
 
@@ -13,7 +14,8 @@ export default function StartScreen() {
     const navigate = useNavigate();
 
     const [amount, setAmount] = useState<string>("");
-    const [category, setCategory] = useState<string>("");
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [categoryId, setCategoryId] = useState<string>("");
     const [difficulty, setDifficulty] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -28,14 +30,11 @@ export default function StartScreen() {
     ];
 
     const categoryOptions: Option[] = [
-        { value: "0", label: "Any Category" },
-        { value: "9", label: "General Knowledge" },
-        { value: "11", label: "Entertainment: Film" },
-        { value: "15", label: "Entertainment: Video Games" },
-        { value: "18", label: "Science: Computers" },
-        { value: "21", label: "Sports" },
-        { value: "28", label: "Vehicles" },
-        { value: "31", label: "Entertainment: Japanese Anime & Manga" },
+        { value: 0, label: "Any Category" },
+        ...categories.map((category) => ({
+            value: category.id,
+            label: category.name,
+        })),
     ];
 
     const difficultyOptions: Option[] = [
@@ -44,9 +43,19 @@ export default function StartScreen() {
         { value: "hard", label: "Hard" },
     ];
 
+    useEffect(() => {
+        fetchCategories()
+            .then((categories) => {
+                setCategories(categories);
+            })
+            .catch((error) => {
+                setError(error.message);
+            });
+    }, []);
+
     const handleStartQuiz = () => {
         setIsLoading(true);
-        fetchQuestions(amount, difficulty, category)
+        fetchQuestions(amount, difficulty, categoryId)
             .then((questions) => {
                 navigate("/quiz", { state: { questions } });
             })
@@ -85,8 +94,8 @@ export default function StartScreen() {
                     <Select
                         label="Category"
                         options={categoryOptions}
-                        value={category}
-                        onChange={setCategory}
+                        value={categoryId}
+                        onChange={setCategoryId}
                         placeholder="Select"
                     />
                     <Select
@@ -103,7 +112,7 @@ export default function StartScreen() {
                     <ButtonMenu
                         label="Start quiz"
                         onClick={handleStartQuiz}
-                        disabled={!amount || !difficulty || !category}
+                        disabled={!amount || !difficulty || !categoryId}
                     />
                 </div>
                 {isLoading && (

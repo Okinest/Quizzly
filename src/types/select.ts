@@ -1,12 +1,12 @@
 export type Option = {
-  value: string;
+  value: string | number;
   label: string;
 };
 
 export type SelectProps = {
   label: string;
   options: Option[];
-  value: string;
-  onChange: (value: string) => void;
+  value: string | number;
+  onChange: (value: string) => void; // Ce que retourne le DOM (toujours une string)
   placeholder?: string;
 };

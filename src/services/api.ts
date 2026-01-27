@@ -1,19 +1,19 @@
-import type { ApiResponse, Question } from "../types/api-response";
+import type { ApiResponse, Question, CategoryResponse, Category } from "../types/api-response";
 
 function getErrorMessage(code: number): string {
     switch (code) {
         case 1:
-            return "Pas assez de questions disponibles pour cette catégorie. Essayez avec moins de questions.";
+            return "Not enough questions available for this category. Try with fewer questions.";
         case 2:
-            return "Paramètre invalide. Veuillez vérifier vos sélections.";
+            return "Invalid parameter. Please check your selections.";
         case 3:
-            return "Erreur de session. Veuillez réessayer.";
+            return "Session error. Please try again.";
         case 4:
-            return "Toutes les questions ont été utilisées. Veuillez réessayer.";
+            return "All questions have been used. Please try again.";
         case 5:
-            return "Trop de requêtes. Veuillez patienter quelques secondes.";
+            return "Too many requests. Please wait a few seconds.";
         default:
-            return "Une erreur inattendue s'est produite.";
+            return "An unexpected error occurred.";
     }
 }
 
@@ -25,10 +25,18 @@ export function fetchQuestions(amount: string, difficulty: string, category: str
     return fetch(url)
         .then(response => response.json())
         .then((data: ApiResponse) => {
+            console.log(url);
+            console.log(data);
         if (data.response_code !== 0) {
             throw new Error(getErrorMessage(data.response_code));
         }
         return data.results;
     });
+}
 
+export function fetchCategories(): Promise<Category[]> {
+    const baseUrl = "https://opentdb.com/api_category.php";
+    return fetch(baseUrl)
+        .then(response => response.json())
+        .then((data: CategoryResponse) => data.trivia_categories);
 }
