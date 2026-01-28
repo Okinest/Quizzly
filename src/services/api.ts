@@ -25,11 +25,9 @@ export function fetchQuestions(amount: string, difficulty: string, category: str
     return fetch(url)
         .then(response => response.json())
         .then((data: ApiResponse) => {
-            console.log(url);
-            console.log(data);
-        if (data.response_code !== 0) {
-            throw new Error(getErrorMessage(data.response_code));
-        }
+            if (data.response_code !== 0) {
+                throw new Error(getErrorMessage(data.response_code));
+            }
         return data.results;
     });
 }
