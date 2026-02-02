@@ -12,7 +12,7 @@ export default function Modal({ message, onClose }: ModalProps) {
                         px-4
                         bg-error
                         hover:bg-error-hover
-                        text-white
+                        text-text
                         rounded-lg
                         cursor-pointer
                         hover:opacity-90

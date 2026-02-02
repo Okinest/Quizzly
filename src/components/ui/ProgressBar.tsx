@@ -7,11 +7,8 @@ export default function ProgressBar({ current, total, showIndicator = true }: Pr
         <div className={showIndicator ? "mb-6" : ""}>
             {showIndicator && (
                 <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm text-text-muted">
+                    <span className="text-sm text-muted">
                         Question {current} sur {total}
-                    </span>
-                    <span className="text-sm font-medium text-primary">
-                        {Math.round(percentage)}%
                     </span>
                 </div>
             )}

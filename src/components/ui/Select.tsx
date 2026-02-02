@@ -3,7 +3,7 @@ import type { SelectProps } from "../../types/select";
 export default function Select({ label, options, value, onChange, placeholder }: SelectProps) {
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-text-muted text-sm font-medium">
+      <label className="text-muted text-sm font-medium">
         {label}
       </label>
 

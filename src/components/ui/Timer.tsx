@@ -58,6 +58,7 @@ export default function Timer({ duration, onTimeUp }: TimerProps) {
             {/* Nombre au centre */}
             <span 
                 className="absolute inset-0 flex items-center justify-center text-lg font-bold"
+                // syntaxe abrégée ES6
                 style={{ color }}
             >
                 {timeLeft}

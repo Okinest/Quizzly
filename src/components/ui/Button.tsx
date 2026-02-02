@@ -4,7 +4,7 @@ export function ButtonMenu({ label, onClick, disabled }: ButtonProps) {
     return (
         <button className="
             bg-primary
-            text-white
+            text-text
             p-4
             rounded-xl
             w-full
@@ -25,7 +25,7 @@ export function ButtonAnswer({ label, onClick, disabled }: ButtonProps) {
         <button className="
             bg-secondary
             hover:bg-secondary-hover
-            text-white
+            text-text
             p-4
             rounded-xl
             w-full

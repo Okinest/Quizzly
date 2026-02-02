@@ -63,7 +63,7 @@ export default function QuizScreen() {
             <div className="card w-full max-w-2xl p-8">
                 <div className="flex items-center gap-4 mb-6">
                     <div className="flex-1">
-                        <span className="text-sm text-text-muted mb-2 block">
+                        <span className="text-sm text-muted mb-2 block">
                             Question {currentIndex + 1} of {questions.length}
                         </span>
                         <ProgressBar current={currentIndex + 1} total={questions.length} showIndicator={false} />
